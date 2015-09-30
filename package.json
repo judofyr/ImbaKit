@@ -1,0 +1,16 @@
+{
+  "name": "imba-kit",
+  "version": "0.1.0",
+
+  "main": "src/imba-kit.imba",
+
+  "dependencies": {
+    "css-layout": "^1.0.0",
+    "imba": "^0.13.0",
+    "webpack": "^1.12.2"
+  },
+
+  "bin": {
+  	"imba-kitc": "bin/imba-kitc.imba"
+  }
+}
