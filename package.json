@@ -6,6 +6,7 @@
 
   "dependencies": {
     "imba": "github:somebee/imba#934ec24dfa909685fe45e1fe0be125a1f7721049",
+    "imba-loader": "*",
     "webpack": "^1.12.2"
   },
 
