@@ -7,7 +7,7 @@ var compiler = webpack
 		extensions: ['', '.js', '.imba']
 	module:
 		loaders: [
-			{ test: /\.imba$/, loader: __dirname+'/../src/imba-loader' }
+			{ test: /\.imba$/, loader: 'imba-loader' }
 		]
 
 compiler.watch({}) do |err, stats|
