@@ -18,11 +18,10 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
-  css_layout = 'node_modules/css-layout/src/Layout'
 
-  s.source_files = ['Pod/Classes/**/*', "#{css_layout}.{c,h}"]
+  s.source_files = ['Pod/Classes/**/*', 'Pod/Deps/**/*']
   s.public_header_files = 'Pod/Classes/**/*.h'
-  s.private_header_files = '#{css_layout}.h'
+  s.private_header_files = 'Pod/Deps/**/*.h'
 
   s.frameworks = 'UIKit'
 end
