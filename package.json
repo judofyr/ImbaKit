@@ -6,7 +6,7 @@
 
   "dependencies": {
     "css-layout": "^1.0.0",
-    "imba": "^0.13.0",
+    "imba": "github:somebee/imba#934ec24dfa909685fe45e1fe0be125a1f7721049",
     "webpack": "^1.12.2"
   },
 

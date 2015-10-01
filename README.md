@@ -2,12 +2,29 @@
 
 ## Usage
 
-You need NPM and CocoaPods:
+Create a package.json:
+
+```json
+{
+  "dependencies": {
+    "imba-kit": "github:judofyr/ImbaKit"
+  },
+  "scripts": {
+    "build": "imba-kitc app.imba"
+  }
+}
+```
+
+Then add ImbaKit to your Podfile:
+
+```ruby
+pod 'ImbaKit', :path => 'node_modules/imba-kit'
+```
+
+Install everything:
 
 ```
-$ npm install --save imba-kit
-$ cat Podfile
-pod 'ImbaKit', path: 'node_modules/imba-kit'
+$ npm install
 $ pod install
 ```
 
@@ -28,10 +45,10 @@ IK.onBoot do
   <app>
 ```
 
-You can now run `imba-kitc` to compile it:
+Build your app:
 
 ```
-$ node_modules/.bin/imba-kitc app.imba
+$ npm run build
 ```
 
 This will produce a `bundle.js`. Add this your Xcode project, and load it using:
