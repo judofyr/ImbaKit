@@ -80,11 +80,20 @@ tag view < element
 		@_childrenVersion++
 
 		var doms = []
+		
+		# Do we have any new children?
+		var newChildren
+
+		if @children
+			newChildren = (@children:length != children:length)
+		else
+			newChildren = true
 
 		for child, idx in children
 			if @children and @children[idx] !== child
 				# The structure has changed. Mark as dirty.
 				markDirty
+				newChildren = true
 
 			child.parent = self
 
@@ -93,6 +102,9 @@ tag view < element
 				markDirty
 
 			doms.push(child.dom)
+
+		if !newChildren
+			return self
 
 		for oldChild in @children
 			oldChild._verifyParent
