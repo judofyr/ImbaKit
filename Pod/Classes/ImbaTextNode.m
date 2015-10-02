@@ -6,6 +6,7 @@
     NSLayoutManager *_layoutManager;
     NSTextStorage *_textStorage;
     NSTextContainer *_textContainer;
+    NSMutableParagraphStyle *_paragraphStyle;
     
 }
 
@@ -22,6 +23,8 @@
     _textStorage = [[NSTextStorage alloc] init];
     [_textStorage addLayoutManager:_layoutManager];
     
+    _paragraphStyle = [NSMutableParagraphStyle new];
+    
     UITextView *view = [[UITextView alloc] initWithFrame:CGRectZero textContainer:_textContainer];
     view.editable = NO;
     view.textContainerInset = UIEdgeInsetsZero;
@@ -30,6 +33,7 @@
 
 - (void)setText:(NSString *)text {
     [_textStorage replaceCharactersInRange:NSMakeRange(0, _textStorage.length) withString:text];
+    [_textStorage addAttribute:NSParagraphStyleAttributeName value:_paragraphStyle range:NSMakeRange(0, _textStorage.length)];
 }
 
 - (CGSize)measure:(float)width {
@@ -37,6 +41,10 @@
     [_layoutManager ensureLayoutForTextContainer:_textContainer];
     CGRect rect = [_layoutManager usedRectForTextContainer:_textContainer];
     return rect.size;
+}
+
+- (void)setTextAlign:(int)value {
+    _paragraphStyle.alignment = value;
 }
 
 @end
