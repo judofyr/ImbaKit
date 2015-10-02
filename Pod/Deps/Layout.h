@@ -37,7 +37,8 @@ typedef enum {
 } css_flex_direction_t;
 
 typedef enum {
-  CSS_JUSTIFY_FLEX_START = 0,
+  CSS_JUSTIFY_PADDING = 0, // Just here so it lines up with CSS_ALIGN
+  CSS_JUSTIFY_FLEX_START,
   CSS_JUSTIFY_CENTER,
   CSS_JUSTIFY_FLEX_END,
   CSS_JUSTIFY_SPACE_BETWEEN,
