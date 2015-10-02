@@ -16,3 +16,4 @@ export def onBoot &blk
 	bootFn = blk
 
 import './imba-kit/view'
+import './imba-kit/text'
