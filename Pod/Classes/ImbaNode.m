@@ -6,28 +6,52 @@
 
 @property (atomic, assign) BOOL isDirty;
 @property (atomic, assign) css_node_t* cssNode;
-
+- (CGSize)measure:(float)width;
 
 @end
 
-@implementation ImbaNode
+@implementation ImbaNode {
 
-NSArray *_children;
+    NSArray *_children;
+    CGRect _frame;
+    
+}
 
-bool NodeIsDirty(void *ctx) {
+static bool NodeIsDirty(void *ctx) {
     ImbaNode* node = (__bridge ImbaNode *)(ctx);
     return node.isDirty;
 }
 
-css_node_t *NodeGetChild(void *ctx, int idx) {
+static css_node_t *NodeGetChild(void *ctx, int idx) {
     ImbaNode* node = (__bridge ImbaNode *)(ctx);
     ImbaNode* childNode = (ImbaNode *)[node.children objectAtIndex:idx];
     return childNode.cssNode;
 }
 
-+(instancetype)create {
+static css_dim_t NodeMeasure(void *ctx, float width) {
+    ImbaNode* node = (__bridge ImbaNode *)(ctx);
+    css_dim_t res;
+
+    if ([node respondsToSelector:@selector(measure:)]) {
+        CGSize size = [node measure:width];
+        res.dimensions[CSS_WIDTH] = size.width;
+        res.dimensions[CSS_HEIGHT] = size.height;
+    } else {
+        res.dimensions[CSS_WIDTH] = CSS_UNDEFINED;
+        res.dimensions[CSS_HEIGHT] = CSS_UNDEFINED;
+    }
+    
+    return res;
+}
+
++ (instancetype)create {
+    return [[self alloc] init];
+}
+
+- (instancetype)init {
+    self = [super init];
     UIView *view = [[UIView alloc] init];
-    return [[self alloc] initWithView:view];
+    return [self initWithView:view];
 }
 
 -(id)initWithView:(UIView *)view {
@@ -37,6 +61,7 @@ css_node_t *NodeGetChild(void *ctx, int idx) {
     _cssNode->children_count = 0;
     _cssNode->get_child = NodeGetChild;
     _cssNode->is_dirty = NodeIsDirty;
+    _cssNode->measure = NodeMeasure;
     _isDirty = YES;
     _children = nil;
     
@@ -96,7 +121,7 @@ css_node_t *NodeGetChild(void *ctx, int idx) {
     if (!CGRectEqualToRect(_frame, newFrame)) {
         _frame = newFrame;
         [viewsWithNewFrame addObject:self];
-        _view.frame = newFrame;
+        [self renderInFrame:newFrame];
     }
     
     node->layout.dimensions[CSS_WIDTH] = CSS_UNDEFINED;
@@ -114,23 +139,47 @@ css_node_t *NodeGetChild(void *ctx, int idx) {
     [self applyLayoutNode:_cssNode viewsWithNewFrame:viewsWithNewFrame];
 }
 
+- (void)renderInFrame:(CGRect)frame {
+    self.view.frame = frame;
+}
+
 - (void)setBackgroundColor:(UIColor *)color {
     self.view.backgroundColor = color;
 }
 
-- (void)setPadding:(NSUInteger)amount {
-    _cssNode->style.padding[CSS_TOP] = amount;
-    _cssNode->style.padding[CSS_LEFT] = amount;
-    _cssNode->style.padding[CSS_RIGHT] = amount;
-    _cssNode->style.padding[CSS_BOTTOM] = amount;
+#define DEFINE_FLOAT(name, path) - (void)set##name:(CGFloat)amount { \
+    _cssNode->style.path = amount; \
 }
 
-- (void)setHeight:(NSUInteger)amount {
-    _cssNode->style.dimensions[CSS_HEIGHT] = amount;
+#define DEFINE_EDGES(name, path) \
+  DEFINE_FLOAT(name##Left, path[CSS_LEFT]) \
+  DEFINE_FLOAT(name##Right, path[CSS_RIGHT]) \
+  DEFINE_FLOAT(name##Top, path[CSS_TOP]) \
+  DEFINE_FLOAT(name##Bottom, path[CSS_BOTTOM])
+
+DEFINE_EDGES(, position)
+DEFINE_EDGES(Padding, padding)
+DEFINE_EDGES(Margin, margin)
+
+#define DEFINE_DIM(name, path) \
+  DEFINE_FLOAT(name##Width, path[CSS_WIDTH]) \
+  DEFINE_FLOAT(name##Height, path[CSS_HEIGHT])
+
+DEFINE_DIM(, dimensions)
+DEFINE_DIM(Min, minDimensions)
+DEFINE_DIM(Max, maxDimensions)
+
+#define DEFINE_FLEX(name, path) - (void)set##name:(int)value { \
+    _cssNode->style.path = value; \
 }
 
-- (void)setFlex:(CGFloat)amount {
-    _cssNode->style.flex = amount;
-}
+DEFINE_FLOAT(Flex, flex)
+DEFINE_FLEX(Wrap, flex_wrap)
+DEFINE_FLEX(Direction, flex_direction)
+DEFINE_FLEX(JustifyContent, justify_content)
+DEFINE_FLEX(AlignItems, align_items)
+DEFINE_FLEX(AlignSelf, align_self)
+DEFINE_FLEX(AlignContent, align_content)
+DEFINE_FLEX(Position, position_type)
 
 @end
