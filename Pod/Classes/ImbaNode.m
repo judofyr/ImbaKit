@@ -169,17 +169,17 @@ DEFINE_DIM(, dimensions)
 DEFINE_DIM(Min, minDimensions)
 DEFINE_DIM(Max, maxDimensions)
 
-#define DEFINE_FLEX(name, path) - (void)set##name:(int)value { \
+#define DEFINE_INT(name, path) - (void)set##name:(int)value { \
     _cssNode->style.path = value; \
 }
 
 DEFINE_FLOAT(Flex, flex)
-DEFINE_FLEX(Wrap, flex_wrap)
-DEFINE_FLEX(Direction, flex_direction)
-DEFINE_FLEX(JustifyContent, justify_content)
-DEFINE_FLEX(AlignItems, align_items)
-DEFINE_FLEX(AlignSelf, align_self)
-DEFINE_FLEX(AlignContent, align_content)
-DEFINE_FLEX(Position, position_type)
+DEFINE_INT(Wrap, flex_wrap)
+DEFINE_INT(Direction, flex_direction)
+DEFINE_INT(JustifyContent, justify_content)
+DEFINE_INT(AlignItems, align_items)
+DEFINE_INT(AlignSelf, align_self)
+DEFINE_INT(AlignContent, align_content)
+DEFINE_INT(Position, position_type)
 
 @end

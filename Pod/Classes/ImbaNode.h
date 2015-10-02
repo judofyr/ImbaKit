@@ -12,7 +12,7 @@
 - (void)setParent:(ImbaNode *)node;
 
 #define IMBA_DEFINE_FLOAT(name) - (void)set##name:(CGFloat)amount;
-#define IMBA_DEFINE_FLEX(name) - (void)set##name:(int)value;
+#define IMBA_DEFINE_INT(name) - (void)set##name:(int)value;
 
 
 #define IMBA_DEFINE_EDGES(name) \
@@ -35,13 +35,13 @@ IMBA_DEFINE_DIM(Min)
 IMBA_DEFINE_DIM(Max)
 
 IMBA_DEFINE_FLOAT(Flex)
-IMBA_DEFINE_FLEX(Wrap)
-IMBA_DEFINE_FLEX(Direction)
-IMBA_DEFINE_FLEX(JustifyContent)
-IMBA_DEFINE_FLEX(AlignItems)
-IMBA_DEFINE_FLEX(AlignSelf)
-IMBA_DEFINE_FLEX(AlignContent)
-IMBA_DEFINE_FLEX(Position)
+IMBA_DEFINE_INT(Wrap)
+IMBA_DEFINE_INT(Direction)
+IMBA_DEFINE_INT(JustifyContent)
+IMBA_DEFINE_INT(AlignItems)
+IMBA_DEFINE_INT(AlignSelf)
+IMBA_DEFINE_INT(AlignContent)
+IMBA_DEFINE_INT(Position)
 
 @end
 
